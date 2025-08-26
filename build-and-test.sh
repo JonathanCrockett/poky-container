@@ -22,6 +22,7 @@ if [ "${ENGINE_CMD}" = "" ]; then
 fi
 
 ${ENGINE_CMD} build \
+			  --platform ${TARGETPLATFORM} \
 			  --build-arg TARGETPLATFORM=$TARGETPLATFORM \
 			  --build-arg BASE_DISTRO=${BASE_DISTRO} \
 			  -t ${REPO}:${BASE_DISTRO} .
