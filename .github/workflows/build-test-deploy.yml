@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - ubuntu-24.04-lts
   pull_request:
 
   # Allow for manually running
