@@ -25,12 +25,6 @@ ${ENGINE_CMD} build \
 			  --platform ${TARGETPLATFORM} \
 			  --build-arg TARGETPLATFORM=$TARGETPLATFORM \
 			  --build-arg BASE_DISTRO=${BASE_DISTRO} \
-       --build-arg http_proxy=$http_proxy \
-       --build-arg HTTP_PROXY=$http_proxy \
-       --build-arg https_proxy=$https_proxy \
-       --build-arg HTTPS_PROXY=$https_proxy \
-       --build-arg no_proxy=$no_proxy \
-       --build-arg NO_PROXY=$no_proxy \
 			  -t ${REPO}:${BASE_DISTRO} .
 
 if command -v annotate-output; then
