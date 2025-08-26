@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-test-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.targetplatform == 'linux/amd64' && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
     permissions:
       packages: write
     strategy:
@@ -36,8 +36,13 @@ jobs:
                       ubuntu-22.04,
                       ubuntu-24.04
         ]
+        targetplatform: [
+          linux/amd64,
+          linux/arm64
+        ]
     env:
       BASE_DISTRO: ${{ matrix.base_distro }}
+      TARGETPLATFORM: ${{ matrix.targetplatform }}
       REPO: crops/poky
       DEFAULT_DISTRO: ubuntu-18.04
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -46,12 +51,13 @@ jobs:
       GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Build and test the images
       - name: Run build-and-test.sh
-        run: ./build-and-test.sh
+        run: ./build-and-test.sh && for docker_image in $(docker images -q); do docker inspect --format='{{.Os}}/{{.Architecture}} {{.RepoTags}}' ${docker_image}; done
 
       # Deploy the images
       - name: Deploy
+        if: ${{ env.DOCKER_PASSWORD != '' && env.GHCR_PASSWORD != '' }}
         run: bash deploy.sh
