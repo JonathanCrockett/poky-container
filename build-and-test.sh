@@ -21,6 +21,8 @@ if [ "${ENGINE_CMD}" = "" ]; then
     ENGINE_CMD="docker"
 fi
 
+TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
+
 ${ENGINE_CMD} build \
 			  --platform ${TARGETPLATFORM} \
 			  --build-arg TARGETPLATFORM=$TARGETPLATFORM \
